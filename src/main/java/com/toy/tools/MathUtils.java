@@ -24,7 +24,6 @@ public class MathUtils {
      * @param s1
      * @param s2
      * @return
-     * @author chengxiangfei
      */
     public static int editDistance(String s1, String s2) {
         int len1 = s1.length();
@@ -34,13 +33,12 @@ public class MathUtils {
             for (int j = 0; j <= len2; j++)
                 matrix[i][j] = i + j;
         }
-
         TreeSet<Integer> comp;
         int row;
         int col;
         for (row = 0; row < len1; row++) {
             for (col = 0; col < len2; col++) {
-                comp = new TreeSet<Integer>();
+                comp = new TreeSet<>();
                 comp.add(matrix[row + 1][col] + 1);
                 comp.add(matrix[row][col + 1] + 1);
 
@@ -54,23 +52,19 @@ public class MathUtils {
                 comp.clear();
             }
         }
-
         return matrix[len1][len2];
     }
 
     /**
-     * 编辑距离
+     * 相对编辑距离
      *
      * @param s1
      * @param s2
-     * @return
-     * @author chengxiangfei
      */
     public static double relativeEditDistance(String s1, String s2) {
         int value = editDistance(StringTools.specialCharFilter(s1), StringTools.specialCharFilter(s2));
         double maxLength;
         double minLength;
-
         if (s1.length() > s2.length()) {
             maxLength = s1.length();
             minLength = s2.length();
@@ -78,7 +72,6 @@ public class MathUtils {
             maxLength = s2.length();
             minLength = s1.length();
         }
-
         // 如果maxLength是minLength数倍，是否削弱某些长字符串的影响作用
         if (maxLength / minLength > EDIT_DISTANCE_LEVEL1) {
             maxLength = minLength * EDIT_DISTANCE_LEVEL2;
@@ -92,7 +85,6 @@ public class MathUtils {
      * @param vec1
      * @param vec2
      * @return
-     * @author s.cg
      */
     public static double distanceOfVectorEuclidSQ(HashMap vec1, HashMap vec2) {
         double result = 0.0;
@@ -101,14 +93,12 @@ public class MathUtils {
         Iterator iterator;
         double value1;
         double value2;
-
         if (vec1.size() != 0) {
             iterator = vec1.entrySet().iterator();
             while (iterator.hasNext()) {
                 item = (Entry) iterator.next();
                 key = (String) item.getKey();
                 value1 = ((Double) item.getValue()).doubleValue();
-
                 if (vec2.containsKey(key)) {
                     value2 = ((Double) vec2.get(key)).doubleValue();
 
@@ -118,20 +108,17 @@ public class MathUtils {
                 }
             }
         }
-
         if (vec2.size() != 0) {
             iterator = vec2.entrySet().iterator();
             while (iterator.hasNext()) {
                 item = (Entry) iterator.next();
                 key = (String) item.getKey();
                 value2 = ((Double) item.getValue()).doubleValue();
-
                 if (!vec1.containsKey(key)) {
                     result += value2 * value2;
                 }
             }
         }
-
         return result;
     }
 
@@ -141,7 +128,6 @@ public class MathUtils {
      * @param vec1
      * @param vec2
      * @return
-     * @author s.cg
      */
     public static double distanceOfVectorCos(HashMap vec1, HashMap vec2) {
         double result = 0.0;
@@ -152,7 +138,6 @@ public class MathUtils {
         double value2;
         double vec1Value = 0;
         double vec2Value = 0;
-
         if (vec1.size() != 0) {
             iterator = vec1.entrySet().iterator();
             while (iterator.hasNext()) {
@@ -173,15 +158,6 @@ public class MathUtils {
         }
 
         if (vec2.size() != 0) {
-            // iterator = vec2.entrySet().iterator();
-            // while(iterator.hasNext())
-            // {
-            // item = (Entry)iterator.next();
-            // key = (String)item.getKey();
-            // value2 = ((Double)item.getValue()).doubleValue();
-            //
-            // vec2Value += value2 * value2;
-            // }
             vec2Value = calcVecValueEuclidSQ(vec2);
         } else {
             return Double.MAX_VALUE;
@@ -303,16 +279,6 @@ public class MathUtils {
         return 0;
     }
 
-    /**
-     * 事实上这个函数实现的内容正是稀疏向量间的欧式距离，但是由于创建了新的距离向量， 因此，实际上认为是浪费了内存，也许还浪费了时间，“实际上获取了3个迭代器，3次循环” 更推荐使用Math.sqrt(distanceOfVectorEuclid(...))
-     * 此函数的主要是为了将计算分拆为两步，你也可以认为是我脑子抽了，一个功能实现两遍
-     *
-     * @param vec1
-     * @param vec2
-     * @return
-     * @author s.cg
-     * @see MathUtils#distanceOfVectorEuclidSQ(HashMap, HashMap)
-     */
     public static double vecDistance(HashMap vec1, HashMap vec2) {
         HashMap vec = calcVector(vec1, vec2, "-", null, 0);
         return Math.sqrt(calcVecValueEuclidSQ(vec));
@@ -466,7 +432,6 @@ public class MathUtils {
         if (nums == null || nums.size() == 0) {
             return 0.0;
         }
-
         double age = 0.0;
 
         for (int i = 0; i < nums.size(); i++) {
